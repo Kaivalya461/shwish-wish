@@ -45,8 +45,12 @@ pipeline {
 
                 // Get some code from a GitHub repository
                 // Run Maven on a Unix agent.
-                git 'https://github.com/Kaivalya461/eureka-service-registry.git'
-                sh "mvn -Dmaven.test.failure.ignore=true clean install"
+                git 'https://github.com/Kaivalya461/shwish-wish.git'
+                dir('./api/shwish-wish') {
+                    sh 'pwd'
+                    sh "mvn -Dmaven.test.failure.ignore=true clean install"
+                }
+                
 
                 echo 'Building stage finished.'
             }
