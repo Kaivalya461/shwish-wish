@@ -27,10 +27,11 @@
               }
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.css"
             ],
             "scripts": [],
-            "baseHref": "/sh/"
+            "baseHref": "/"
           },
           "configurations": {
             "production": {
@@ -86,6 +87,7 @@
               }
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.css"
             ],
             "scripts": []

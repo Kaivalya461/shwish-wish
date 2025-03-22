@@ -1,0 +1,6 @@
+.hidden-card {
+    /* Center it horizontally with auto margins */
+    margin: 0 auto;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
