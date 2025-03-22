@@ -65,8 +65,11 @@ pipeline {
         stage('DockerBuildImage') {
             steps {
                 echo 'Build Docker Image..'
+                sh 'pwd'
                 script{
-                    dockerImage = docker.build(imagename)
+                    dir('./api/shwish-wish') {
+                        dockerImage = docker.build(imagename)
+                    }
                 }
             }
         }
