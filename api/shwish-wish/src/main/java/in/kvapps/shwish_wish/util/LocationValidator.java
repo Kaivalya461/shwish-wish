@@ -10,6 +10,7 @@ public class LocationValidator {
         // Add valid locations (latitude, longitude)
         validLocations.add(new double[]{19.0760, 72.8777}); // Example: Mumbai
         validLocations.add(new double[]{28.6139, 77.2090}); // Example: Delhi
+        validLocations.add(new double[]{19.2000, 72.9900}); // Example: Thane
     }
 
     public static boolean isLocationValid(double userLat, double userLong) {
