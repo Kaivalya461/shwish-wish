@@ -17,7 +17,7 @@ public class ContentService {
         return contentDto;
     }
 
-    public ContentDto getMessageContent(String lat, String lon, String ans1, String ans2) {
+    public ContentDto getMessageContent(String lat, String lon, String answers) {
         ContentDto contentDto = new ContentDto();
         boolean isValid = LocationValidator.isLocationValid(Double.parseDouble(lat), Double.parseDouble(lon));
         if(isValid) {

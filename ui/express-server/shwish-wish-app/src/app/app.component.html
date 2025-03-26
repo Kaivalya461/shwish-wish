@@ -6,7 +6,20 @@
   </mat-card-content>
 </mat-card>
 
-<mat-card class="hidden-card" *ngIf="isValidLocation">
+<!-- QNA Message -->
+<mat-card class="landing-card" *ngIf="isValidLocation && !contentMsgReceived">
+  <mat-card-content>
+    <p>Verify your Identify</p>
+
+    <p *ngIf="currentQna"> Q{{ currentQnaIndex + 1 }}: {{ currentQna }}</p>
+    <input #answerInput type="text" placeholder="Your Answer" />
+    <button *ngIf="currentQna" (click)="saveAnswer(answerInput)">Next</button>
+
+    <!-- <div *ngFor="let elem of qnas"> {{elem}} ? <input > </div> -->
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="hidden-card" *ngIf="isValidLocation && contentMsgReceived">
   <mat-card-content>
     <!-- Hidden Div-->
     <div>
@@ -35,5 +48,12 @@
     </div>
   </mat-card-content>
 </mat-card>
+
+<mat-card>
+  <mat-card-content>
+    <p>Select your BirthDate </p>
+  </mat-card-content>
+</mat-card>
+
 
 <router-outlet />

@@ -1,10 +1,10 @@
 export class UserGeoLocationResponseDto {
-    isValidLocation: boolean;
+    validLocation: boolean;
     latitudeReceived: number;
     longitudeReceived: number;
 
-    constructor(isValidLocation: boolean, latitudeReceived: number, longitudeReceived: number) {
-        this.isValidLocation = isValidLocation;
+    constructor(validLocation: boolean, latitudeReceived: number, longitudeReceived: number) {
+        this.validLocation = validLocation;
         this.latitudeReceived = latitudeReceived;
         this.longitudeReceived = longitudeReceived;
     }

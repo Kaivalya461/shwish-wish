@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { UserGeoLocationResponseDto } from '../model/UserGeoLocationResponseDto';
+import { ContentDto } from '../model/ContentDto';
 
 @Injectable({
     providedIn: 'root',
@@ -12,23 +13,28 @@ export class ContentService {
 
     constructor(private http: HttpClient) { }
 
-    getCurrentLocation(): Promise<GeolocationPosition> {
-        return new Promise((resolve, reject) => {
-            if ('geolocation' in navigator) {
-                navigator.geolocation.getCurrentPosition(resolve, reject);
-            } else {
-                reject(new Error('Geolocation is not supported by your browser.'));
-            }
-        });
+    // This function gets QNA Content from backend.
+    getQnaContent(location: any): Observable<ContentDto> {
+        console.log("Calling getQnaContent for location - " + location);
+        let lat = "lat=" + location.latitude;
+        let lon = "lon=" + location.longitude;
+        return this.http.get<ContentDto>(this.domainBaseUrl + "/nginx/shwish-wish/content/qna" + "?" + lat + "&" + lon)
+            .pipe(
+                catchError(this.handleError<ContentDto>(
+                    'getQnaContent', new ContentDto()))
+            );
     }
 
-    // This function validates the coords from backend.
-    getUserGeoLocationDetails(location: any): Observable<UserGeoLocationResponseDto> {
-        console.log("Calling getUserGeoLocationDetails for location - " + location);
-        return this.http.post<UserGeoLocationResponseDto>(this.domainBaseUrl + "/nginx/shwish-wish/user-geo-location/validate", location)
+    // This function gets MSG Content from backend.
+    getMsgContent(location: any, answers: string): Observable<ContentDto> {
+        console.log("Calling getMsgContent for location - " + location);
+        let lat = "lat=" + location.latitude;
+        let lon = "lon=" + location.longitude;
+        // let ans = "answers=" + answers;
+        return this.http.get<ContentDto>(this.domainBaseUrl + "/nginx/shwish-wish/content/message" + "?" + lat + "&" + lon + "&ans1=asdf&ans2=asd")
             .pipe(
-                catchError(this.handleError<UserGeoLocationResponseDto>(
-                    'getUserGeoLocationDetails', new UserGeoLocationResponseDto(false, 0.0, 0.0)))
+                catchError(this.handleError<ContentDto>(
+                    'getMsgContent', new ContentDto()))
             );
     }
 

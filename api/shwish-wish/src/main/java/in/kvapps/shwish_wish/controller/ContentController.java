@@ -22,9 +22,8 @@ public class ContentController {
     @GetMapping("/message")
     public ResponseEntity<ContentDto> getMessageContent(@RequestParam String lat,
                                                         @RequestParam String lon,
-                                                        @RequestParam String ans1,
-                                                        @RequestParam String ans2) {
-        var result = contentService.getMessageContent(lat, lon, ans1, ans2);
+                                                        @RequestParam String answers) {
+        var result = contentService.getMessageContent(lat, lon, answers);
         return ResponseEntity.ok(result);
     }
 }
