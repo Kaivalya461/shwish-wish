@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user-geo-location")
-@CrossOrigin("*.kvapps.in")
+@CrossOrigin("*")
 public class GeoLocationController {
     @Autowired private GeoLocationService geoLocationService;
 

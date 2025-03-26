@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/content")
-@CrossOrigin("*.kvapps.in")
+@CrossOrigin("*")
 public class ContentController {
     @Autowired private ContentService contentService;
 
