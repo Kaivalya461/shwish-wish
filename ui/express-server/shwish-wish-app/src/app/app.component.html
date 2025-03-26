@@ -1,10 +1,12 @@
 <!-- Load Message -->
-<div>
-  <p> Hello, this is Shwish Wish App. </p>
-  <p> This app is only accessible from your home. </p>
-</div>
+<mat-card class="landing-card" *ngIf="!isValidLocation">
+  <mat-card-content>
+    <!-- <p> Hello, this is Shwish Wish App. </p> -->
+    <div> This app is only accessible from your home. </div>
+  </mat-card-content>
+</mat-card>
 
-<mat-card class="hidden-card">
+<mat-card class="hidden-card" *ngIf="isValidLocation">
   <mat-card-content>
     <!-- Hidden Div-->
     <div>
@@ -33,6 +35,5 @@
     </div>
   </mat-card-content>
 </mat-card>
-
 
 <router-outlet />

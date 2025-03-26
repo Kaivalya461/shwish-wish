@@ -3,11 +3,12 @@ import { RouterOutlet } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { GeolocationService } from './service/GeoLocationService';
 import { timeout } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, MatCardModule],
+  imports: [RouterOutlet, MatCardModule, CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -22,10 +23,9 @@ export class AppComponent {
   ngOnInit() {
     this.getLocation();
 
-    console.log("Testing" + this.location);
     if (this.location != null
       && this.location.latitude != 0.0 && this.location?.longitude != 0.0) {
-
+        
     }
   }
 

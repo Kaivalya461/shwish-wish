@@ -1,6 +1,11 @@
 .hidden-card {
     /* Center it horizontally with auto margins */
     margin: 0 auto;
-    margin-left: 1rem;
-    margin-right: 1rem;
+    margin: 0.5rem;
+}
+
+.landing-card {
+    /* Center it horizontally with auto margins */
+    margin: 0 auto;
+    margin: 0.5rem;
 }
