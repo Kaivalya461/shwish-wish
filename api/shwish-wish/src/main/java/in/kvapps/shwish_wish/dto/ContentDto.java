@@ -6,4 +6,5 @@ import lombok.Data;
 public class ContentDto {
     private String qna;
     private String msg;
+    private String img;
 }

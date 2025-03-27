@@ -1,0 +1,22 @@
+#spring.application.name=shwish-wish
+
+spring:
+  application:
+    name: shwish-wish
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: dummyMail
+    password: dummyPass
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+kv:
+#  content:
+#    key: dummyKey
+  mail:
+    recipient: dummyMail

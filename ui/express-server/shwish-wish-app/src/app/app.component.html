@@ -1,60 +1,64 @@
-<!-- Load Message -->
-<mat-card class="landing-card" *ngIf="!isValidLocation">
-  <mat-card-content>
-    <!-- <p> Hello, this is Shwish Wish App. </p> -->
-    <div> This app is only accessible from your home. </div>
-  </mat-card-content>
-</mat-card>
+<div class="background-container" [ngStyle]="{'background-image': 'url(' + backgroundImage + ')'}">
 
-<!-- QNA Message -->
-<mat-card class="landing-card" *ngIf="isValidLocation && !contentMsgReceived">
-  <mat-card-content>
-    <p>Verify your Identify</p>
 
-    <p *ngIf="currentQna"> Q{{ currentQnaIndex + 1 }}: {{ currentQna }}</p>
-    <mat-form-field>
-      <input matInput #answerInput type="text" placeholder="Your Answer" />
-      <button mat-button (click)="saveAnswer(answerInput)" class="next-btn">
-        Next
-      </button>
-    </mat-form-field>
+  <!-- Load Message -->
+  <mat-card class="landing-card" *ngIf="!isValidLocation">
+    <mat-card-content>
+      <!-- <p> Hello, this is Shwish Wish App. </p> -->
+      <div> This app is only accessible from your home. </div>
+      <div> Please provide your location to verify. </div>
+    </mat-card-content>
+  </mat-card>
 
-    <!-- <div *ngFor="let elem of qnas"> {{elem}} ? <input > </div> -->
-  </mat-card-content>
-</mat-card>
+  <!-- QNA Message -->
+  <mat-card class="landing-card" *ngIf="isValidLocation && !contentMsgReceived">
+    <mat-card-content>
+      <p>Verify your Identify</p>
 
-<mat-card class="hidden-card" *ngIf="isValidLocation && contentMsgReceived">
-  <mat-card-content>
-    <!-- Hidden Div-->
-    <div>
+      <p *ngIf="currentQna"> Q{{ currentQnaIndex + 1 }}: {{ currentQna }}</p>
+      <mat-form-field>
+        <input matInput #answerInput type="text" placeholder="Your Answer" />
+        <button mat-button (click)="saveAnswer(answerInput)" class="next-btn">
+          Next
+        </button>
+      </mat-form-field>
 
-      <!-- Text Message -->
-      <p>
-        {{msg1}}
-      </p>
+      <!-- <div *ngFor="let elem of qnas"> {{elem}} ? <input > </div> -->
+    </mat-card-content>
+  </mat-card>
 
-      <!-- Wish Message -->
+  <mat-card class="hidden-card" *ngIf="isValidLocation && contentMsgReceived">
+    <mat-card-content>
+      <!-- Hidden Div-->
       <div>
-        {{msg2}}
-      </div>
 
-      <!-- Date Picker -->
-      <div class="date-picker-container">
-              
-        <div *ngIf="selectedDate">
-          <p> Selected Date: {{ selectedDate | date:'MMMM d' }}</p>
+        <!-- Text Message -->
+        <p>
+          {{msg1}}
+        </p>
+
+        <!-- Wish Message -->
+        <div>
+          {{msg2}}
         </div>
-        <mat-form-field appearance="fill">
-          <mat-label>Pick your Date: </mat-label>
-          <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" />
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
+
+        <!-- Date Picker -->
+        <div class="date-picker-container">
+
+          <div *ngIf="selectedDate">
+            <p> Selected Date: {{ selectedDate | date:'MMMM d' }}</p>
+          </div>
+          <mat-form-field appearance="fill">
+            <mat-label>Pick your Date: </mat-label>
+            <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" (dateChange)="onDateChange($event)" />
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+
       </div>
+    </mat-card-content>
+  </mat-card>
 
-    </div>
-  </mat-card-content>
-</mat-card>
-
-
+</div>
 <router-outlet />

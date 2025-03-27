@@ -22,7 +22,7 @@ public class LocationValidator {
 
     public boolean isLocationValid(double userLat, double userLong) {
         for (double[] location : validLocations) {
-            if (calculateDistance(userLat, userLong, location[0], location[1]) <= 4) { // 4 km radius
+            if (calculateDistance(userLat, userLong, location[0], location[1]) <= 1) { // 1 km radius
                 return true;
             }
         }

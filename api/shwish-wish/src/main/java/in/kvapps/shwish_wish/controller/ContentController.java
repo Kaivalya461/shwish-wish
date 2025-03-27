@@ -26,4 +26,12 @@ public class ContentController {
         var result = contentService.getMessageContent(lat, lon, answers);
         return ResponseEntity.ok(result);
     }
+
+    @GetMapping("/image")
+    public ResponseEntity<ContentDto> getImageContent(@RequestParam String lat,
+                                                        @RequestParam String lon,
+                                                        @RequestParam String answers) {
+        var result = contentService.getImageContent(lat, lon, answers);
+        return ResponseEntity.ok(result);
+    }
 }

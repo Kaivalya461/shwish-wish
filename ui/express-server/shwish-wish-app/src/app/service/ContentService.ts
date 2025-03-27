@@ -32,9 +32,22 @@ export class ContentService {
         let lon = "lon=" + location.longitude;
         let ans = "answers=" + answers;
         return this.http.get<ContentDto>(this.domainBaseUrl + "/nginx/shwish-wish/content/message" + "?" + lat + "&" + lon + "&" + ans)
-        .pipe(
+            .pipe(
                 catchError(this.handleError<ContentDto>(
                     'getMsgContent', new ContentDto()))
+            );
+    }
+
+    // This function gets Img Content from backend.
+    getImgContent(location: any, answers: string): Observable<ContentDto> {
+        let lat = "lat=" + location.latitude;
+        let lon = "lon=" + location.longitude;
+        let ans = "answers=" + answers;
+        // return this.http.get<ContentDto>(this.domainBaseUrl + "/nginx/shwish-wish/content/image" + "?" + lat + "&" + lon + "&" + ans)
+        return this.http.get<ContentDto>(this.domainBaseUrl + "/localhost:8080/content/image" + "?" + lat + "&" + lon + "&" + ans)
+            .pipe(
+                catchError(this.handleError<ContentDto>(
+                    'getImgContent', new ContentDto()))
             );
     }
 

@@ -12,6 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
+import { ConfettiService } from './service/ConfettiService';
 
 
 @Component({
@@ -40,21 +41,19 @@ export class AppComponent {
   answers: string[] = [];
 
   selectedDate: Date | null = new Date();
+  currentYear = new Date().getFullYear();
+  targetDate: Date | null = new Date(this.currentYear,4,22);
+  backgroundImage: string = '';
 
   msg1: string = '';
   msg2: string = '';
 
   constructor(private geolocationService: GeolocationService, private contentService: ContentService,
-    private decryptionService: DecryptionService) {
+    private decryptionService: DecryptionService, private confettiService: ConfettiService) {
   }
 
   ngOnInit() {
     this.getLocation();
-
-    if (this.location != null
-      && this.location.latitude != 0.0 && this.location?.longitude != 0.0) {
-      console.log("Inside Valid Location");
-    }
   }
 
   getLocation() {
@@ -64,6 +63,10 @@ export class AppComponent {
         this.location = {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
+        };
+        this.location = {
+          latitude: 19.1444,
+          longitude: 72.9999,
         };
 
         //validate the location
@@ -76,7 +79,7 @@ export class AppComponent {
                 let resultArray = data.qna.split('_');
                 let key = this.getQNAKey();
                 for (let i = 0; i < resultArray.length; i++) {
-                  this.qnas[i] = this.decryptionService.decrypt(resultArray[i], key);
+                  this.qnas[i] = this.decryptionService.decrypt(resultArray[i], key+key);
                 }
             });
           }
@@ -113,9 +116,13 @@ export class AppComponent {
         if(data.msg != null) {
           this.contentMsgReceived = true;
           let messages:string[] = data.msg.split('_');
-          this.msg1 = messages[0];
-          this.msg2 = messages[1];
+          let key = this.getMSGKey();
+          this.msg1 = this.decryptionService.decrypt(messages[0], key+key);
+          this.msg2 = this.decryptionService.decrypt(messages[1], key+key);
         } else {
+          //reset qna
+          this.currentQnaIndex = 0;
+          this.answers = [];
           alert("Incorrect Answers!!");
         }
       });
@@ -141,5 +148,34 @@ export class AppComponent {
     }
 
     return this.answers.join('');
+  }
+
+  celebrate() {
+    this.confettiService.launchConfetti();
+  }
+
+  onDateChange(event: any): void {
+    const pickedDate = event.value; // Get the selected date
+
+    // Check if the selected date matches your criteria
+    const specificDate = this.targetDate // Replace with your target date (month is zero-based)
+    if (
+      specificDate != null &&
+      pickedDate &&
+      pickedDate.getMonth() === specificDate.getMonth() &&
+      pickedDate.getDate() === specificDate.getDate()
+    ) {
+      this.confettiService.launchConfetti(); // Trigger confetti
+
+      //Img
+      let answers = this.answers.join('_');
+      let imgData = this.contentService.getImgContent(this.location, answers).subscribe(data => {
+        this.setBackgroundImage(data.img);
+      });
+    }
+  }
+
+  setBackgroundImage(base64String: string): void {
+    this.backgroundImage = `data:image/jpeg;base64,${base64String}`;
   }
 }
