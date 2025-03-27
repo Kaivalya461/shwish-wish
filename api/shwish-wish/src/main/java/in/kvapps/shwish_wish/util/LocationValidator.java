@@ -1,28 +1,36 @@
 package in.kvapps.shwish_wish.util;
 
+import in.kvapps.shwish_wish.config.AppConfig;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class LocationValidator {
-    private static final List<double[]> validLocations = new ArrayList<>();
+import static in.kvapps.shwish_wish.constant.ContentConstants.LOC1;
+import static in.kvapps.shwish_wish.constant.ContentConstants.LOC2;
 
-    static {
+@Service
+public class LocationValidator {
+    private final List<double[]> validLocations = new ArrayList<>();
+
+    public LocationValidator(@Autowired AppConfig appConfig) {
         // Add valid locations (latitude, longitude)
-        validLocations.add(new double[]{19.0760, 72.8777}); // Example: Mumbai
-        validLocations.add(new double[]{28.6139, 77.2090}); // Example: Delhi
-        validLocations.add(new double[]{19.2000, 72.9900}); // Example: Thane
+        validLocations.add(getLocation(LOC1, appConfig.getKey()));
+        validLocations.add(getLocation(LOC2, appConfig.getKey()));
     }
 
-    public static boolean isLocationValid(double userLat, double userLong) {
+    public boolean isLocationValid(double userLat, double userLong) {
         for (double[] location : validLocations) {
-            if (calculateDistance(userLat, userLong, location[0], location[1]) <= 10) { // 10 km radius
+            if (calculateDistance(userLat, userLong, location[0], location[1]) <= 4) { // 4 km radius
                 return true;
             }
         }
         return false;
     }
 
-    private static double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+    private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
         double earthRadius = 6371; // Earth's radius in kilometers
         double dLat = Math.toRadians(lat2 - lat1);
         double dLon = Math.toRadians(lon2 - lon1);
@@ -31,6 +39,15 @@ public class LocationValidator {
                         Math.sin(dLon / 2) * Math.sin(dLon / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return earthRadius * c;
+    }
+
+    private double[] getLocation(String locationString, String key) {
+        var stringArray = DecryptUtil.decrypt(locationString, key).split("_");
+
+        return new double[]{
+                Double.parseDouble(stringArray[0]),
+                Double.parseDouble(stringArray[1]),
+        };
     }
 }
 
