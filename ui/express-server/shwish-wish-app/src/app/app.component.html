@@ -12,8 +12,12 @@
     <p>Verify your Identify</p>
 
     <p *ngIf="currentQna"> Q{{ currentQnaIndex + 1 }}: {{ currentQna }}</p>
-    <input #answerInput type="text" placeholder="Your Answer" />
-    <button *ngIf="currentQna" (click)="saveAnswer(answerInput)">Next</button>
+    <mat-form-field>
+      <input matInput #answerInput type="text" placeholder="Your Answer" />
+      <button mat-button (click)="saveAnswer(answerInput)" class="next-btn">
+        Next
+      </button>
+    </mat-form-field>
 
     <!-- <div *ngFor="let elem of qnas"> {{elem}} ? <input > </div> -->
   </mat-card-content>
@@ -26,32 +30,29 @@
 
       <!-- Text Message -->
       <p>
-        Hello, this is Shwish Wish App.
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
-        standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make
-        a
-        type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
-        remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing
-        Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions
-        of
-        Lorem Ipsum.
+        {{msg1}}
       </p>
 
       <!-- Wish Message -->
       <div>
-        The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections
-        1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original
-        form.
+        {{msg2}}
       </div>
 
       <!-- Date Picker -->
-    </div>
-  </mat-card-content>
-</mat-card>
+      <div class="date-picker-container">
+              
+        <div *ngIf="selectedDate">
+          <p> Selected Date: {{ selectedDate | date:'MMMM d' }}</p>
+        </div>
+        <mat-form-field appearance="fill">
+          <mat-label>Pick your Date: </mat-label>
+          <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" />
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
 
-<mat-card>
-  <mat-card-content>
-    <p>Select your BirthDate </p>
+    </div>
   </mat-card-content>
 </mat-card>
 

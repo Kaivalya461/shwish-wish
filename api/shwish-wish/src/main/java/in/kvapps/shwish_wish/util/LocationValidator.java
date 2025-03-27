@@ -1,7 +1,6 @@
 package in.kvapps.shwish_wish.util;
 
 import in.kvapps.shwish_wish.config.AppConfig;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +41,7 @@ public class LocationValidator {
     }
 
     private double[] getLocation(String locationString, String key) {
-        var stringArray = DecryptUtil.decrypt(locationString, key).split("_");
+        var stringArray = EncryptDecryptUtil.decrypt(locationString, key).split("_");
 
         return new double[]{
                 Double.parseDouble(stringArray[0]),

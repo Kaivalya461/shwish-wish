@@ -30,9 +30,9 @@ export class ContentService {
         console.log("Calling getMsgContent for location - " + location);
         let lat = "lat=" + location.latitude;
         let lon = "lon=" + location.longitude;
-        // let ans = "answers=" + answers;
-        return this.http.get<ContentDto>(this.domainBaseUrl + "/nginx/shwish-wish/content/message" + "?" + lat + "&" + lon + "&ans1=asdf&ans2=asd")
-            .pipe(
+        let ans = "answers=" + answers;
+        return this.http.get<ContentDto>(this.domainBaseUrl + "/nginx/shwish-wish/content/message" + "?" + lat + "&" + lon + "&" + ans)
+        .pipe(
                 catchError(this.handleError<ContentDto>(
                     'getMsgContent', new ContentDto()))
             );

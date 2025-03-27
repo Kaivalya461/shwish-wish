@@ -9,3 +9,16 @@
     margin: 0 auto;
     margin: 0.5rem;
 }
+
+.date-picker-container {
+    max-width: 300px;
+    margin: 20px auto;
+}
+mat-form-field {
+    width: 100%;
+}
+
+.next-btn {
+    margin: 0.5rem;
+}
+  
