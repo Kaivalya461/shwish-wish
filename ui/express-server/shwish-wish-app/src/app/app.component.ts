@@ -117,8 +117,8 @@ export class AppComponent {
           this.contentMsgReceived = true;
           let messages:string[] = data.msg.split('_');
           let key = this.getMSGKey();
-          this.msg1 = messages[0];
-          this.msg2 = messages[1];
+          this.msg1 = this.decryptionService.decrypt(messages[0], key+key);
+          this.msg2 = this.decryptionService.decrypt(messages[1], key+key);
         } else {
           //reset qna
           this.currentQnaIndex = 0;

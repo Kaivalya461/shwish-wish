@@ -51,7 +51,8 @@ public class ContentService {
         String key = getQNAKey(lat, lon);
         String val1 = EncryptDecryptUtil.encrypt(sanitizeText(answerArray[0]), key+key);
         String val2 = EncryptDecryptUtil.encrypt(sanitizeText(answerArray[1]), key+key);
-        if (Objects.equals(val1, ANS1) && Objects.equals(val2, ANS2)) {
+        if ((Objects.equals(val1, ANS1) && Objects.equals(val2, ANS2)) ||
+                (Objects.equals(val1, ANS3) && Objects.equals(val2, ANS4))) {
             return true;
         }
         return false;
