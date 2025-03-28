@@ -43,8 +43,8 @@ export class ContentService {
         let lat = "lat=" + location.latitude;
         let lon = "lon=" + location.longitude;
         let ans = "answers=" + answers;
-        // return this.http.get<ContentDto>(this.domainBaseUrl + "/nginx/shwish-wish/content/image" + "?" + lat + "&" + lon + "&" + ans)
-        return this.http.get<ContentDto>(this.domainBaseUrl + "/localhost:8080/content/image" + "?" + lat + "&" + lon + "&" + ans)
+        return this.http.get<ContentDto>(this.domainBaseUrl + "/nginx/shwish-wish/content/image" + "?" + lat + "&" + lon + "&" + ans)
+        // return this.http.get<ContentDto>(this.domainBaseUrl + "/localhost:8080/content/image" + "?" + lat + "&" + lon + "&" + ans)
             .pipe(
                 catchError(this.handleError<ContentDto>(
                     'getImgContent', new ContentDto()))
