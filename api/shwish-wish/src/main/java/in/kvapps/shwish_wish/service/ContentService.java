@@ -3,7 +3,6 @@ package in.kvapps.shwish_wish.service;
 import in.kvapps.shwish_wish.dto.ContentDto;
 import in.kvapps.shwish_wish.dto.MyActivityDto;
 import in.kvapps.shwish_wish.util.EncryptDecryptUtil;
-import in.kvapps.shwish_wish.util.EncryptUtil;
 import in.kvapps.shwish_wish.util.LocationValidator;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
