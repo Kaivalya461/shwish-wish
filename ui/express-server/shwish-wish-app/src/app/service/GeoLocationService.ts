@@ -8,7 +8,8 @@ import { UserGeoLocationResponseDto } from '../model/UserGeoLocationResponseDto'
     providedIn: 'root',
 })
 export class GeolocationService {
-    domainBaseUrl: string = "https://api.kvapps.in";
+    url: string = "https://api.kvapps.in/nginx/shwish-wish";
+    // url: string = "http://localhost:8080";
 
     constructor(private http: HttpClient) { }
 
@@ -25,7 +26,7 @@ export class GeolocationService {
     // This function validates the coords from backend.
     getUserGeoLocationDetails(location: any): Observable<UserGeoLocationResponseDto> {
         console.log("Calling getUserGeoLocationDetails for location - " + location);
-        return this.http.post<UserGeoLocationResponseDto>(this.domainBaseUrl + "/nginx/shwish-wish/user-geo-location/validate", location)
+        return this.http.post<UserGeoLocationResponseDto>(this.url + "/user-geo-location/validate", location)
             .pipe(
                 catchError(this.handleError<UserGeoLocationResponseDto>(
                     'getUserGeoLocationDetails', new UserGeoLocationResponseDto(false, 0.0, 0.0)))

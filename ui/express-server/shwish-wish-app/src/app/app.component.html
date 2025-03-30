@@ -12,7 +12,7 @@
   </mat-card>
 
   <!-- QNA Message -->
-  <mat-card class="qna-card my-card" *ngIf="isValidLocation && !contentMsgReceived">
+  <mat-card class="qna-card my-card" *ngIf="isValidLocation && showQna">
     <mat-card-content>
       <p>Verify your Identify</p>
       <p *ngIf="currentQna"> Q{{ currentQnaIndex + 1 }}: {{ currentQna }}</p>
@@ -35,13 +35,13 @@
       <div *ngIf="!isCollapsed">
         <!-- Hidden Div-->
         <div>
-          <p>
+          <p style="white-space: pre-line;">
             {{msg1}}
           </p>
 
-          <div>
+          <p style="white-space: pre-line;">
             {{msg2}}
-          </div>
+          </p>
 
           <!-- Date Picker -->
           <div class="date-picker-container">

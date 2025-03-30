@@ -37,6 +37,7 @@ export class AppComponent {
   contentMsgReceived: boolean = false;
   isCollapsed = false;
 
+  showQna: boolean = true;
   qnas: string[] = [];
   currentQnaIndex: number = 0;
   answers: string[] = [];
@@ -114,21 +115,42 @@ export class AppComponent {
       console.log('All answered');
       // Get Msg Content
       let answers = this.answers.join('_');
-      this.contentService.getMsgContent(this.location, answers).subscribe(data => {
-        //Return the Content to UI;
-        if(data.msg != null) {
-          this.contentMsgReceived = true;
-          let messages:string[] = data.msg.split('_');
-          let key = this.getMSGKey();
-          this.msg1 = this.decryptionService.decrypt(messages[0], key+key);
-          this.msg2 = this.decryptionService.decrypt(messages[1], key+key);
-        } else {
-          //reset qna
-          this.currentQnaIndex = 0;
-          this.answers = [];
-          alert("Incorrect Answers!!");
-        }
-      });
+
+      const currentDate = new Date();
+      if (
+        this.targetDate != null &&
+        currentDate &&
+        currentDate.getMonth() === this.targetDate.getMonth() &&
+        currentDate.getDate() === this.targetDate.getDate()
+      ) {
+        this.confettiService.launchConfetti();
+  
+        //Img
+        let answers = this.answers.join('_');
+        this.contentService.getImgContent(this.location, answers).subscribe(data => {
+          this.decryptAndSetBackgroundImage(data.img);
+        });
+  
+        this.contentMsgReceived = false;
+        this.showQna = false;
+      } else {
+        this.contentService.getMsgContent(this.location, answers).subscribe(data => {
+          //Return the Content to UI;
+          if(data.msg != null) {
+            this.contentMsgReceived = true;
+            this.showQna = false;
+            let messages:string[] = data.msg.split('_');
+            let key = this.getMSGKey();
+            this.msg1 = this.decryptionService.decrypt(messages[0], key+key);
+            this.msg2 = this.decryptionService.decrypt(messages[1], key+key);
+          } else {
+            //reset qna
+            this.currentQnaIndex = 0;
+            this.answers = [];
+            alert("Incorrect Answers!!");
+          }
+        });
+      }
     }
   }
 
@@ -187,6 +209,6 @@ export class AppComponent {
 
   decryptAndSetBackgroundImage(encryptedString: string): void {
     const key = this.getMSGKey();
-    this.backgroundImage = this.decryptionService.decrypt(encryptedString, key);
+    this.backgroundImage = this.decryptionService.decrypt(encryptedString, key+key);
   }
 }

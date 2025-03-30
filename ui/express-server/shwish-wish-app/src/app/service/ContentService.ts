@@ -9,7 +9,9 @@ import { ContentDto } from '../model/ContentDto';
     providedIn: 'root',
 })
 export class ContentService {
-    domainBaseUrl: string = "https://api.kvapps.in";
+    domainBaseUrl: string = "https://api.kvapps.in/nginx/shwish-wish";
+    // domainBaseUrl: string = "http://localhost:8080";
+    url:string = this.domainBaseUrl;
 
     constructor(private http: HttpClient) { }
 
@@ -18,7 +20,7 @@ export class ContentService {
         console.log("Calling getQnaContent for location - " + location);
         let lat = "lat=" + location.latitude;
         let lon = "lon=" + location.longitude;
-        return this.http.get<ContentDto>(this.domainBaseUrl + "/nginx/shwish-wish/content/qna" + "?" + lat + "&" + lon)
+        return this.http.get<ContentDto>(this.url + "/content/qna" + "?" + lat + "&" + lon)
             .pipe(
                 catchError(this.handleError<ContentDto>(
                     'getQnaContent', new ContentDto()))
@@ -31,7 +33,7 @@ export class ContentService {
         let lat = "lat=" + location.latitude;
         let lon = "lon=" + location.longitude;
         let ans = "answers=" + answers;
-        return this.http.get<ContentDto>(this.domainBaseUrl + "/nginx/shwish-wish/content/message" + "?" + lat + "&" + lon + "&" + ans)
+        return this.http.get<ContentDto>(this.url + "/content/message" + "?" + lat + "&" + lon + "&" + ans)
             .pipe(
                 catchError(this.handleError<ContentDto>(
                     'getMsgContent', new ContentDto()))
@@ -43,7 +45,7 @@ export class ContentService {
         let lat = "lat=" + location.latitude;
         let lon = "lon=" + location.longitude;
         let ans = "answers=" + answers;
-        return this.http.get<ContentDto>(this.domainBaseUrl + "/nginx/shwish-wish/content/image" + "?" + lat + "&" + lon + "&" + ans)
+        return this.http.get<ContentDto>(this.url + "/content/image" + "?" + lat + "&" + lon + "&" + ans)
         // return this.http.get<ContentDto>(this.domainBaseUrl + "/localhost:8080/content/image" + "?" + lat + "&" + lon + "&" + ans)
             .pipe(
                 catchError(this.handleError<ContentDto>(

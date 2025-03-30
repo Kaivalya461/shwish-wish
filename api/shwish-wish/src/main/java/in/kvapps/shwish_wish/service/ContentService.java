@@ -16,8 +16,6 @@ import java.time.ZonedDateTime;
 import java.util.Base64;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import static in.kvapps.shwish_wish.constant.ContentConstants.*;
 
@@ -26,7 +24,6 @@ import static in.kvapps.shwish_wish.constant.ContentConstants.*;
 public class ContentService {
     @Autowired private LocationValidator locationValidator;
     @Autowired private EmailService emailService;
-    ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     public ContentDto getQnAContent(String lat, String lon) {
         ContentDto contentDto = new ContentDto();
@@ -42,10 +39,7 @@ public class ContentService {
         boolean isValid = locationValidator.isLocationValid(Double.parseDouble(lat), Double.parseDouble(lon));
         boolean allValidAnswers = isValidAnswers(answers, lat, lon);
         if(isValid && allValidAnswers) {
-            executorService.submit(() ->
-                    sendMailAlert(lat, lon, answers, isValid, "getMessageContent() content Accessed!")
-            );
-            executorService.shutdown();
+            sendMailAlert(lat, lon, answers, isValid, "getMessageContent() content Accessed!");
             contentDto.setMsg(MSG1 + "_" + MSG2);
         }
 
@@ -55,6 +49,10 @@ public class ContentService {
     private boolean isValidAnswers(String answers, String lat, String lon) {
         String[] answerArray = answers.split("_");
         String key = getQNAKey(lat, lon);
+        if (0 == answerArray.length || null == key) {
+            log.warn("isValidAnswers -> Empty Answers Received OR Incorrect Key");
+            return false;
+        }
         String val1 = EncryptDecryptUtil.encrypt(sanitizeText(answerArray[0]), key+key);
         String val2 = EncryptDecryptUtil.encrypt(sanitizeText(answerArray[1]), key+key);
         if ((Objects.equals(val1, ANS1) && Objects.equals(val2, ANS2)) ||
@@ -92,7 +90,9 @@ public class ContentService {
                 .lat(lat)
                 .lon(lon)
                 .build();
-        emailService.sendMailToMe(activityDto, body);
+
+        Thread mailAlertThread = new Thread(() -> emailService.sendMailToMe(activityDto, body));
+        mailAlertThread.start();
     }
 
     public ContentDto getImageContent(String lat, String lon, String answers) {
@@ -114,10 +114,7 @@ public class ContentService {
 //            log.error("Error converting image to Base64: {}", e.getMessage(), e);
 //        }
 
-        executorService.submit(() ->
-                sendMailAlert(lat, lon, answers, true, "getImageContent() content Accessed!")
-        );
-        executorService.shutdown();
+        sendMailAlert(lat, lon, answers, true, "getImageContent() content Accessed!");
         contentDto.setImg(IMG);
         return contentDto;
     }

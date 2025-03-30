@@ -30,7 +30,7 @@ mat-form-field {
     height: 100vh;
     background: no-repeat center center;
     background-size: cover; /* Automatically adjusts for aspect ratios */
-    animation: pan-and-zoom 35s linear infinite;
+    animation: pan-and-zoom 50s linear infinite;
 }
 
 @keyframes pan-and-zoom {
