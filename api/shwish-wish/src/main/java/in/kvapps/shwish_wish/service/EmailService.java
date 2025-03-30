@@ -43,7 +43,7 @@ public class EmailService {
         }
     }
 
-    public void sendMailToMe(MyActivityDto myActivityDto) {
+    public void sendMailToMe(MyActivityDto myActivityDto, String body) {
         byte[] jsonBytes = null;
         try {
             //prepare file
@@ -56,7 +56,7 @@ public class EmailService {
         sendEmailWithFile(
                 recipient,
                 getSubjectForMsg1(myActivityDto.getActivityTime()),
-                "Content Successfully Viewed",
+                body,
                 getFileName(myActivityDto.getActivityTime()),
                 jsonBytes
         );

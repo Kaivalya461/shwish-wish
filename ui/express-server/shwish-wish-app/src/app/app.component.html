@@ -1,8 +1,9 @@
-<div class="background-container" [ngStyle]="{'background-image': 'url(' + backgroundImage + ')'}">
+<div class="background-container"
+  [ngStyle]="{'background-image': 'url(' + backgroundImage + ')'}">
 
 
   <!-- Load Message -->
-  <mat-card class="landing-card" *ngIf="!isValidLocation">
+  <mat-card class="landing-card my-card" *ngIf="!isValidLocation">
     <mat-card-content>
       <!-- <p> Hello, this is Shwish Wish App. </p> -->
       <div> This app is only accessible from your home. </div>
@@ -11,10 +12,9 @@
   </mat-card>
 
   <!-- QNA Message -->
-  <mat-card class="landing-card" *ngIf="isValidLocation && !contentMsgReceived">
+  <mat-card class="qna-card my-card" *ngIf="isValidLocation && !contentMsgReceived">
     <mat-card-content>
       <p>Verify your Identify</p>
-
       <p *ngIf="currentQna"> Q{{ currentQnaIndex + 1 }}: {{ currentQna }}</p>
       <mat-form-field>
         <input matInput #answerInput type="text" placeholder="Your Answer" />
@@ -22,37 +22,41 @@
           Next
         </button>
       </mat-form-field>
-
-      <!-- <div *ngFor="let elem of qnas"> {{elem}} ? <input > </div> -->
     </mat-card-content>
   </mat-card>
 
-  <mat-card class="hidden-card" *ngIf="isValidLocation && contentMsgReceived">
+  <!-- Content Card -->
+  <mat-card class="hidden-card my-card" *ngIf="isValidLocation && contentMsgReceived">
     <mat-card-content>
-      <!-- Hidden Div-->
-      <div>
-        <p>
-          {{msg1}}
-        </p>
+      <button mat-button (click)="toggleCollapse()" class="toggle-btn">
+        {{ isCollapsed ? 'Expand Card' : 'Collapse Card' }}
+      </button>
 
+      <div *ngIf="!isCollapsed">
+        <!-- Hidden Div-->
         <div>
-          {{msg2}}
-        </div>
+          <p>
+            {{msg1}}
+          </p>
 
-        <!-- Date Picker -->
-        <div class="date-picker-container">
-
-          <div *ngIf="selectedDate">
-            <p> Selected Date: {{ selectedDate | date:'MMMM d' }}</p>
+          <div>
+            {{msg2}}
           </div>
-          <mat-form-field appearance="fill">
-            <mat-label>Pick your Date: </mat-label>
-            <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" (dateChange)="onDateChange($event)" />
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
-        </div>
 
+          <!-- Date Picker -->
+          <div class="date-picker-container">
+
+            <div *ngIf="selectedDate">
+              <p> Selected Date: {{ selectedDate | date:'MMMM d' }}</p>
+            </div>
+            <mat-form-field appearance="fill">
+              <mat-label>Pick your Date: </mat-label>
+              <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" (dateChange)="onDateChange($event)" />
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
       </div>
     </mat-card-content>
   </mat-card>

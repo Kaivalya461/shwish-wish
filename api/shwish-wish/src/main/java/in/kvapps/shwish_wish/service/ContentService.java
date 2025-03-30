@@ -16,6 +16,8 @@ import java.time.ZonedDateTime;
 import java.util.Base64;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static in.kvapps.shwish_wish.constant.ContentConstants.*;
 
@@ -24,6 +26,7 @@ import static in.kvapps.shwish_wish.constant.ContentConstants.*;
 public class ContentService {
     @Autowired private LocationValidator locationValidator;
     @Autowired private EmailService emailService;
+    ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     public ContentDto getQnAContent(String lat, String lon) {
         ContentDto contentDto = new ContentDto();
@@ -39,7 +42,10 @@ public class ContentService {
         boolean isValid = locationValidator.isLocationValid(Double.parseDouble(lat), Double.parseDouble(lon));
         boolean allValidAnswers = isValidAnswers(answers, lat, lon);
         if(isValid && allValidAnswers) {
-            sendMailAlert(lat, lon, answers, isValid);
+            executorService.submit(() ->
+                    sendMailAlert(lat, lon, answers, isValid, "getMessageContent() content Accessed!")
+            );
+            executorService.shutdown();
             contentDto.setMsg(MSG1 + "_" + MSG2);
         }
 
@@ -77,7 +83,7 @@ public class ContentService {
         return part1 + part2;
     }
 
-    private void sendMailAlert(String lat, String lon, String answers, boolean isValidLocation) {
+    private void sendMailAlert(String lat, String lon, String answers, boolean isValidLocation, String body) {
         MyActivityDto activityDto = MyActivityDto.builder()
                 .activityId(UUID.randomUUID().toString())
                 .validLocation(isValidLocation)
@@ -86,7 +92,7 @@ public class ContentService {
                 .lat(lat)
                 .lon(lon)
                 .build();
-        emailService.sendMailToMe(activityDto);
+        emailService.sendMailToMe(activityDto, body);
     }
 
     public ContentDto getImageContent(String lat, String lon, String answers) {
@@ -107,6 +113,11 @@ public class ContentService {
 //        } catch (IOException e) {
 //            log.error("Error converting image to Base64: {}", e.getMessage(), e);
 //        }
+
+        executorService.submit(() ->
+                sendMailAlert(lat, lon, answers, true, "getImageContent() content Accessed!")
+        );
+        executorService.shutdown();
         contentDto.setImg(IMG);
         return contentDto;
     }

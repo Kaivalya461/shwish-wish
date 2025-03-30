@@ -35,6 +35,7 @@ export class AppComponent {
   error: string | null = null;
   isValidLocation: boolean = false;
   contentMsgReceived: boolean = false;
+  isCollapsed = false;
 
   qnas: string[] = [];
   currentQnaIndex: number = 0;
@@ -56,6 +57,10 @@ export class AppComponent {
     this.getLocation();
   }
 
+  toggleCollapse() {
+    this.isCollapsed = !this.isCollapsed;
+  }
+
   getLocation() {
     this.geolocationService
       .getCurrentLocation()
@@ -63,10 +68,6 @@ export class AppComponent {
         this.location = {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
-        };
-        this.location = {
-          latitude: 19.1444,
-          longitude: 72.9999,
         };
 
         //validate the location
@@ -82,6 +83,8 @@ export class AppComponent {
                   this.qnas[i] = this.decryptionService.decrypt(resultArray[i], key+key);
                 }
             });
+          } else {
+            alert("Invalid Location - Please try again!");
           }
         });
 
@@ -169,13 +172,21 @@ export class AppComponent {
 
       //Img
       let answers = this.answers.join('_');
-      let imgData = this.contentService.getImgContent(this.location, answers).subscribe(data => {
-        this.setBackgroundImage(data.img);
+      this.contentService.getImgContent(this.location, answers).subscribe(data => {
+        this.decryptAndSetBackgroundImage(data.img);
       });
+
+      //Collapse Div
+      this.isCollapsed = true;
     }
   }
 
   setBackgroundImage(base64String: string): void {
     this.backgroundImage = `data:image/jpeg;base64,${base64String}`;
+  }
+
+  decryptAndSetBackgroundImage(encryptedString: string): void {
+    const key = this.getMSGKey();
+    this.backgroundImage = this.decryptionService.decrypt(encryptedString, key);
   }
 }
