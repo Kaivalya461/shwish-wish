@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>in.kvapps</groupId>
 	<artifactId>shwish-wish</artifactId>
-	<version>1.0.2</version>
+	<version>1.0.3</version>
 	<name>shwish-wish</name>
 	<description>APIs for fetching Hidden-Message, Users Geo-Location, and more.</description>
 	<url/>
