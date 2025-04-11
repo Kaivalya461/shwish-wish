@@ -15,7 +15,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
-@Service
+//@Service
 @Log4j2
 public class EmailService {
     @Autowired private JavaMailSender javaMailSender;

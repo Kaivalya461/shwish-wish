@@ -23,7 +23,6 @@ import static in.kvapps.shwish_wish.constant.ContentConstants.*;
 @Log4j2
 public class ContentService {
     @Autowired private LocationValidator locationValidator;
-    @Autowired private EmailService emailService;
 
     public ContentDto getQnAContent(String lat, String lon) {
         ContentDto contentDto = new ContentDto();
@@ -39,7 +38,6 @@ public class ContentService {
         boolean isValid = locationValidator.isLocationValid(Double.parseDouble(lat), Double.parseDouble(lon));
         boolean allValidAnswers = isValidAnswers(answers, lat, lon);
         if(isValid && allValidAnswers) {
-            sendMailAlert(lat, lon, answers, isValid, "getMessageContent() content Accessed!");
             contentDto.setMsg(MSG1 + "_" + MSG2);
         }
 
@@ -81,19 +79,19 @@ public class ContentService {
         return part1 + part2;
     }
 
-    private void sendMailAlert(String lat, String lon, String answers, boolean isValidLocation, String body) {
-        MyActivityDto activityDto = MyActivityDto.builder()
-                .activityId(UUID.randomUUID().toString())
-                .validLocation(isValidLocation)
-                .activityTime(ZonedDateTime.now(ZoneId.of("UTC")))
-                .answers(answers)
-                .lat(lat)
-                .lon(lon)
-                .build();
-
-        Thread mailAlertThread = new Thread(() -> emailService.sendMailToMe(activityDto, body));
-        mailAlertThread.start();
-    }
+//    private void sendMailAlert(String lat, String lon, String answers, boolean isValidLocation, String body) {
+//        MyActivityDto activityDto = MyActivityDto.builder()
+//                .activityId(UUID.randomUUID().toString())
+//                .validLocation(isValidLocation)
+//                .activityTime(ZonedDateTime.now(ZoneId.of("UTC")))
+//                .answers(answers)
+//                .lat(lat)
+//                .lon(lon)
+//                .build();
+//
+//        Thread mailAlertThread = new Thread(() -> emailService.sendMailToMe(activityDto, body));
+//        mailAlertThread.start();
+//    }
 
     public ContentDto getImageContent(String lat, String lon, String answers) {
         ContentDto contentDto = new ContentDto();
@@ -102,19 +100,6 @@ public class ContentService {
             return contentDto;
         }
 
-        // Path to the image file
-//        String imagePath = "src/main/resources/img/sample-img (1).jpg"; // Replace with your image path
-
-//        try {
-//            // Convert the image to Base64 string
-//            String base64Image = encodeImageToBase64(imagePath);
-//            System.out.println("Base64 Representation of the Image:");
-//            System.out.println(base64Image);
-//        } catch (IOException e) {
-//            log.error("Error converting image to Base64: {}", e.getMessage(), e);
-//        }
-
-        sendMailAlert(lat, lon, answers, true, "getImageContent() content Accessed!");
         contentDto.setImg(IMG);
         return contentDto;
     }
