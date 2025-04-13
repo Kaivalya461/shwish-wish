@@ -5,6 +5,13 @@
     background-color: rgba(58, 212, 255, 0.7);
 }
 
+.loading-status, .card-content {
+    /* Center it horizontally with auto margins */
+    margin: 0 auto;
+    margin: 0.5rem;
+    /* background-color: rgba(58, 212, 255, 0.7); */
+}
+
 .toggle-btn {
     margin-bottom: 10px;
 }

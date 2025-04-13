@@ -11,8 +11,10 @@ import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
-import {MatButtonModule} from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 import { ConfettiService } from './service/ConfettiService';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDividerModule } from '@angular/material/divider';
 
 
 @Component({
@@ -25,7 +27,10 @@ import { ConfettiService } from './service/ConfettiService';
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
-    MatButtonModule],
+    MatButtonModule,
+    MatProgressSpinnerModule,
+    MatDividerModule
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -50,11 +55,19 @@ export class AppComponent {
   msg1: string = '';
   msg2: string = '';
 
+  spinnerStatusText: string = '';
+  showLandingCardSpinner: boolean = false;
+  activityStatusText: string = '';
+
   constructor(private geolocationService: GeolocationService, private contentService: ContentService,
     private decryptionService: DecryptionService, private confettiService: ConfettiService) {
   }
 
   ngOnInit() {
+    // Landing-Card Spinner and Text
+    this.showLandingCardSpinner = true;
+    this.spinnerStatusText = "Identifying User Location..."
+
     this.getLocation();
   }
 
@@ -71,32 +84,26 @@ export class AppComponent {
           longitude: position.coords.longitude,
         };
 
-        //validate the location
-        this.geolocationService.getUserGeoLocationDetails(this.location).subscribe(data => {
-          this.isValidLocation = data.validLocation;
-
-          // get QNA Content
-          if(data.validLocation) {
-              this.contentService.getQnaContent(this.location).subscribe(data => {
-                let resultArray = data.qna.split('_');
-                let key = this.getQNAKey();
-                for (let i = 0; i < resultArray.length; i++) {
-                  this.qnas[i] = this.decryptionService.decrypt(resultArray[i], key+key);
-                }
-            });
-          } else {
-            alert("Invalid Location - Please try again!");
-          }
-        });
-
-        console.log("Found some location coords");
-        this.error = null; // Clear any previous error
+        // Check whether User provided permissions or not.
+        // If granged, proceed with fetching data from backend.
+        this.getLocationStatus();
       })
       .catch((err) => {
         console.log("Error in some location coords");
+        if (err.message.includes("denied")) {
+          this.disableSpinnerAndUpdateActivityText(
+            "User Denied Location Access - Please reset your 'Location' permissions for this site & try again!"
+          );
+        }
         this.error = err.message;
         this.location = null; // Clear previous location
       });
+  }
+
+  private disableSpinnerAndUpdateActivityText(activityText: string) {
+    this.showLandingCardSpinner = false;
+    this.spinnerStatusText = '';
+    this.activityStatusText = activityText;
   }
 
   // Get the current qna
@@ -210,5 +217,40 @@ export class AppComponent {
   decryptAndSetBackgroundImage(encryptedString: string): void {
     const key = this.getMSGKey();
     this.backgroundImage = this.decryptionService.decrypt(encryptedString, key+key);
+  }
+
+  getLocationStatus() {
+    this.geolocationService.getLocationPermission().then((status) => {
+      if (status === 'denied') {
+        this.disableSpinnerAndUpdateActivityText("Location Permissions not found. Please provide the Location Access!");
+      } else if (status === 'granted') {
+        //validate the location
+        this.geolocationService.getUserGeoLocationDetails(this.location).subscribe(data => {
+          this.isValidLocation = data.validLocation;
+          this.disableSpinnerAndUpdateActivityText("");
+
+          // get QNA Content
+          if(data.validLocation) {
+              this.contentService.getQnaContent(this.location).subscribe(data => {
+                let resultArray = data.qna.split('_');
+                let key = this.getQNAKey();
+                for (let i = 0; i < resultArray.length; i++) {
+                  this.qnas[i] = this.decryptionService.decrypt(resultArray[i], key+key);
+                }
+            });
+          } else {
+            this.showLandingCardSpinner = false;
+            this.activityStatusText = "Invalid Location - Please try again and refresh the page!";
+            alert("Invalid Location - Please try again and refresh the page!");
+          }
+        });
+
+        console.log("Found some location coords");
+        this.error = null; // Clear any previous error
+      }
+    }).catch((error) => {
+      this.error = error; // Handle any errors
+      console.error(error);
+    });
   }
 }

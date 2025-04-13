@@ -4,12 +4,24 @@
 
   <!-- Load Message -->
   <mat-card class="landing-card my-card" *ngIf="!isValidLocation">
-    <mat-card-content>
+    <mat-card-content class="card-content">
       <!-- <p> Hello, this is Shwish Wish App. </p> -->
-      <div> This app is only accessible from your home. </div>
-      <!-- <div> Please enable your 'Location' and refresh the page. </div> -->
-      <div> Please enable your 'Location' and visit the site in new tab (Some caching behaviour yet to be resovled XD) </div>
+      <div> This app is only accessible from your room. </div>
     </mat-card-content>
+
+    <mat-divider></mat-divider>
+
+    <mat-card-footer class="loading-status">
+      <div *ngIf="showLandingCardSpinner" style="display: flex; align-items: center;">
+        <mat-spinner [diameter]="30">
+        </mat-spinner>
+        <span style="margin-left: 10px;"> {{ spinnerStatusText }}</span>
+      </div>
+
+      <div>
+        <span> {{ activityStatusText }}</span>
+      </div>
+    </mat-card-footer>
   </mat-card>
 
   <!-- QNA Message -->

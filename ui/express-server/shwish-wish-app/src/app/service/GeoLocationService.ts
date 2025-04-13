@@ -49,4 +49,24 @@ export class GeolocationService {
     private log(message: string) {
         console.log(message);
     }
+
+    getLocationPermission(): Promise<string> {
+        return new Promise((resolve, reject) => {
+          if (navigator.permissions) {
+            navigator.permissions.query({ name: 'geolocation' }).then((result) => {
+              if (result.state === 'granted') {
+                resolve('granted');
+              } else if (result.state === 'prompt') {
+                resolve('prompt');
+              } else if (result.state === 'denied') {
+                resolve('denied');
+              }
+            }).catch((error) => {
+              reject('Error checking permissions: ' + error);
+            });
+          } else {
+            reject('Permissions API not supported');
+          }
+        });
+    }
 }
