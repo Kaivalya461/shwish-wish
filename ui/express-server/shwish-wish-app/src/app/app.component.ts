@@ -113,7 +113,7 @@ export class AppComponent {
 
   // Save answer and move to the next qna
   saveAnswer(answer: HTMLInputElement): void {
-    this.answers[this.currentQnaIndex] = answer.value;
+    this.answers[this.currentQnaIndex] = this.sanitizeText(answer.value);
     answer.value = '';
 
     if (this.currentQnaIndex < this.qnas.length - 1) {
@@ -253,4 +253,11 @@ export class AppComponent {
       console.error(error);
     });
   }
+
+  sanitizeText(input: string): string {
+    let sanitizedText = input.replace(/\s+/g, '');
+    sanitizedText = sanitizedText.replace(/[^0-9]/g, '');
+    return sanitizedText;
+  }
+  
 }
