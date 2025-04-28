@@ -9,7 +9,7 @@ import { ContentDto } from '../model/ContentDto';
     providedIn: 'root',
 })
 export class ContentService {
-    domainBaseUrl: string = "https://api.kvapps.in/nginx/shwish-wish";
+    domainBaseUrl: string = "https://shwish-wish-api.kvapps.in/";
     // domainBaseUrl: string = "http://localhost:8080";
     url:string = this.domainBaseUrl;
 
