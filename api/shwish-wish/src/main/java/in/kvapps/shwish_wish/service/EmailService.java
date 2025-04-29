@@ -29,6 +29,12 @@ public class EmailService {
     public void sendNotification(NotifyRequestDto requestDto) {
         var isValidLocation = locationValidator
                 .isLocationValid(Double.parseDouble(requestDto.getLat()), Double.parseDouble(requestDto.getLon()));
+
+        if (!isValidLocation) {
+            log.error("EmailService::sendNotification -> Received Invalid Location Co-ords, notifyRequestDto: {}", requestDto);
+            return;
+        }
+
         MyActivityDto activityDto = MyActivityDto.builder()
                 .activityId(UUID.randomUUID().toString())
                 .validLocation(isValidLocation)
