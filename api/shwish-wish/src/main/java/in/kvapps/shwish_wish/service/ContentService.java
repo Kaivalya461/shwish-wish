@@ -44,6 +44,17 @@ public class ContentService {
         return contentDto;
     }
 
+    public ContentDto getSpecialEventMessageContent(String lat, String lon, String answers) {
+        ContentDto contentDto = new ContentDto();
+        boolean isValid = locationValidator.isLocationValid(Double.parseDouble(lat), Double.parseDouble(lon));
+        boolean allValidAnswers = isValidAnswers(answers, lat, lon);
+        if(isValid && allValidAnswers) {
+            contentDto.setMsg(MSG3);
+        }
+
+        return contentDto;
+    }
+
     private boolean isValidAnswers(String answers, String lat, String lon) {
         String[] answerArray = answers.split("_");
         String key = getQNAKey(lat, lon);

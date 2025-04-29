@@ -27,6 +27,13 @@ public class ContentController {
         return ResponseEntity.ok(result);
     }
 
+    @GetMapping("/special-event/message")
+    public ResponseEntity<ContentDto> getSpecialEventMessage(@RequestParam String lat,
+                                                        @RequestParam String lon,
+                                                        @RequestParam String answers) {
+        return ResponseEntity.ok(contentService.getSpecialEventMessageContent(lat, lon, answers));
+    }
+
     @GetMapping("/image")
     public ResponseEntity<ContentDto> getImageContent(@RequestParam String lat,
                                                         @RequestParam String lon,
