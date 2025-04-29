@@ -3,6 +3,7 @@ package in.kvapps.shwish_wish.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import in.kvapps.shwish_wish.dto.MyActivityDto;
 import in.kvapps.shwish_wish.dto.NotifyRequestDto;
+import in.kvapps.shwish_wish.util.AnswerValidator;
 import in.kvapps.shwish_wish.util.LocationValidator;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.util.ByteArrayDataSource;
@@ -29,9 +30,10 @@ public class EmailService {
     public void sendNotification(NotifyRequestDto requestDto) {
         var isValidLocation = locationValidator
                 .isLocationValid(Double.parseDouble(requestDto.getLat()), Double.parseDouble(requestDto.getLon()));
+        var areValidAnswers = AnswerValidator.isValidAnswers(requestDto.getAnswers(), requestDto.getLat(), requestDto.getLon());
 
-        if (!isValidLocation) {
-            log.error("EmailService::sendNotification -> Received Invalid Location Co-ords, notifyRequestDto: {}", requestDto);
+        if (!isValidLocation || !areValidAnswers) {
+            log.error("EmailService::sendNotification -> Received Invalid Location Co-ords OR Answers, notifyRequestDto: {}", requestDto);
             return;
         }
 
