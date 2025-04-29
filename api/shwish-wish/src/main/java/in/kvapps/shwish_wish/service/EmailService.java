@@ -2,6 +2,8 @@ package in.kvapps.shwish_wish.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import in.kvapps.shwish_wish.dto.MyActivityDto;
+import in.kvapps.shwish_wish.dto.NotifyRequestDto;
+import in.kvapps.shwish_wish.util.LocationValidator;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.util.ByteArrayDataSource;
 import lombok.extern.log4j.Log4j2;
@@ -14,13 +16,30 @@ import org.springframework.stereotype.Service;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
-//@Service
+@Service
 @Log4j2
 public class EmailService {
     @Autowired private JavaMailSender javaMailSender;
     @Value("${kv.mail.recipient}") private String recipient;
     @Autowired private ObjectMapper objectMapper;
+    @Autowired private LocationValidator locationValidator;
+
+    public void sendNotification(NotifyRequestDto requestDto) {
+        var isValidLocation = locationValidator
+                .isLocationValid(Double.parseDouble(requestDto.getLat()), Double.parseDouble(requestDto.getLon()));
+        MyActivityDto activityDto = MyActivityDto.builder()
+                .activityId(UUID.randomUUID().toString())
+                .validLocation(isValidLocation)
+                .activityTime(ZonedDateTime.now(ZoneId.of("UTC")))
+                .answers(requestDto.getAnswers())
+                .lat(requestDto.getLat())
+                .lon(requestDto.getLon())
+                .build();
+
+        sendMailToMe(activityDto, requestDto.getNotificationSource());
+    }
 
     public void sendEmailWithFile(String to, String subject, String body, String fileName, byte[] attachmentBytes) {
         try {
