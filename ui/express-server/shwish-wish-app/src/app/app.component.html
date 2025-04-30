@@ -74,5 +74,12 @@
     </mat-card-content>
   </mat-card>
 
+  <!-- Special Event Card -->
+  <app-special-event
+    *ngIf="showSpecialEvent"
+    [locationData]="location"
+    [answersData]="answers">
+  </app-special-event>
+
 </div>
 <router-outlet />

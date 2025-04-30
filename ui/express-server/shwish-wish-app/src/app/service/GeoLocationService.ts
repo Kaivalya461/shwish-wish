@@ -8,7 +8,7 @@ import { UserGeoLocationResponseDto } from '../model/UserGeoLocationResponseDto'
     providedIn: 'root',
 })
 export class GeolocationService {
-    url: string = "https://shwish-wish-api.kvapps.in/";
+    url: string = "https://shwish-wish-api.kvapps.in";
     // url: string = "http://localhost:8080";
 
     constructor(private http: HttpClient) { }

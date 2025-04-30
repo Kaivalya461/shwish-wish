@@ -15,6 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { ConfettiService } from './service/ConfettiService';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDividerModule } from '@angular/material/divider';
+import { SpecialEventComponent } from './special-event/special-event.component';
 
 
 @Component({
@@ -29,7 +30,8 @@ import { MatDividerModule } from '@angular/material/divider';
     FormsModule,
     MatButtonModule,
     MatProgressSpinnerModule,
-    MatDividerModule
+    MatDividerModule,
+    SpecialEventComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
@@ -58,6 +60,8 @@ export class AppComponent {
   spinnerStatusText: string = '';
   showLandingCardSpinner: boolean = false;
   activityStatusText: string = '';
+
+  showSpecialEvent: boolean = false;
 
   constructor(private geolocationService: GeolocationService, private contentService: ContentService,
     private decryptionService: DecryptionService, private confettiService: ConfettiService) {
@@ -140,6 +144,13 @@ export class AppComponent {
   
         this.contentMsgReceived = false;
         this.showQna = false;
+
+        // Special Event
+        if (2025 == currentDate.getFullYear()) {
+          setTimeout(() => {
+            this.showSpecialEvent = true;
+          }, 2700);
+        }
       } else {
         this.contentService.getMsgContent(this.location, answers).subscribe(data => {
           //Return the Content to UI;

@@ -9,7 +9,7 @@ import { ContentDto } from '../model/ContentDto';
     providedIn: 'root',
 })
 export class ContentService {
-    domainBaseUrl: string = "https://shwish-wish-api.kvapps.in/";
+    domainBaseUrl: string = "https://shwish-wish-api.kvapps.in";
     // domainBaseUrl: string = "http://localhost:8080";
     url:string = this.domainBaseUrl;
 
@@ -50,6 +50,18 @@ export class ContentService {
             .pipe(
                 catchError(this.handleError<ContentDto>(
                     'getImgContent', new ContentDto()))
+            );
+    }
+
+    // This function gets MSG Content from backend.
+    getSpecialEventMsgContent(location: any, answers: string): Observable<ContentDto> {
+        let lat = "lat=" + location.latitude;
+        let lon = "lon=" + location.longitude;
+        let ans = "answers=" + answers;
+        return this.http.get<ContentDto>(this.url + "/content/special-event/message" + "?" + lat + "&" + lon + "&" + ans)
+            .pipe(
+                catchError(this.handleError<ContentDto>(
+                    'getSpecialEventMsgContent', new ContentDto()))
             );
     }
 

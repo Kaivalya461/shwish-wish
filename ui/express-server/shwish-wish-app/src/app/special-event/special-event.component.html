@@ -1,0 +1,18 @@
+<div>
+    <mat-card class="my-card">
+        <mat-card-content>
+            <button mat-flat-button (click)="toggleCollapse()" class="toggle-btn">
+                {{ isCollapsed ? 'Expand Card' : 'Collapse Card' }}
+            </button>
+
+            <div *ngIf="!isCollapsed">
+                <p style="white-space: pre-line;">
+                    {{msg3}}
+                </p>
+                <button mat-flat-button (click)="notify()" class="notify-btn">
+                    Notify Kv!
+                </button>
+            </div>
+        </mat-card-content>
+      </mat-card>
+</div>
