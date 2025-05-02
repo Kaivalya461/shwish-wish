@@ -45,7 +45,7 @@ export class SpecialEventComponent {
       notificationSource: 'Special_Event_Notify_KV',
       lat: this.locationData?.latitude + '',
       lon: this.locationData?.longitude + '',
-      answers: this.answersData.join('')
+      answers: this.answersData.join('_')
     }
     
     this.notifyService.sendNotification(requestDto).subscribe();
