@@ -234,6 +234,7 @@ export class AppComponent {
       this.contentService.getImgContent(this.location, answers).subscribe(data => {
         this.decryptAndSetBackgroundImage(data.icstsmftayImg);
       });
+      this.isCollapsed = true;
     }
   }
 
