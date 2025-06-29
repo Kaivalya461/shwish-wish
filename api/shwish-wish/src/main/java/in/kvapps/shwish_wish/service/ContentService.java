@@ -74,6 +74,7 @@ public class ContentService {
         }
 
         contentDto.setImg(IMG);
+        contentDto.setIcstsmftayImg(ICSTSMFTAY_IMG);
         return contentDto;
     }
 

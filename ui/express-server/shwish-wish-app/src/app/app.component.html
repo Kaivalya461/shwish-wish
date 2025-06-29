@@ -1,7 +1,6 @@
 <div class="background-container"
   [ngStyle]="{'background-image': 'url(' + backgroundImage + ')'}">
 
-
   <!-- Load Message -->
   <mat-card class="landing-card my-card" *ngIf="!isValidLocation">
     <mat-card-content class="card-content">
@@ -64,7 +63,11 @@
             </div>
             <mat-form-field appearance="fill">
               <mat-label>Pick your Date: </mat-label>
-              <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" (dateChange)="onDateChange($event)" />
+              <input matInput [matDatepicker]="picker"
+                [min]="minDate"
+                [max]="maxDate"
+                [(ngModel)]="selectedDate"
+                (dateChange)="onDateChange($event)"/>
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>

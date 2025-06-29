@@ -63,6 +63,10 @@ export class AppComponent {
 
   showSpecialEvent: boolean = false;
 
+  // Date Picker Min and Max Dates
+  minDate = new Date(2022, 7, 1);
+  maxDate = new Date(new Date().setFullYear(this.currentYear + 11));
+
   constructor(private geolocationService: GeolocationService, private contentService: ContentService,
     private decryptionService: DecryptionService, private confettiService: ConfettiService) {
   }
@@ -202,6 +206,7 @@ export class AppComponent {
 
     // Check if the selected date matches your criteria
     const specificDate = this.targetDate // Replace with your target date (month is zero-based)
+    const icstsmftayDate = new Date(2024, 5, 11);
     if (
       specificDate != null &&
       pickedDate &&
@@ -218,6 +223,17 @@ export class AppComponent {
 
       //Collapse Div
       this.isCollapsed = true;
+    } else if (
+      pickedDate &&
+      pickedDate.getFullYear() === icstsmftayDate.getFullYear() &&
+      pickedDate.getMonth() === icstsmftayDate.getMonth() &&
+      pickedDate.getDate() === icstsmftayDate.getDate()
+    ) {
+      //icstsmftay
+      let answers = this.answers.join('_');
+      this.contentService.getImgContent(this.location, answers).subscribe(data => {
+        this.decryptAndSetBackgroundImage(data.icstsmftayImg);
+      });
     }
   }
 

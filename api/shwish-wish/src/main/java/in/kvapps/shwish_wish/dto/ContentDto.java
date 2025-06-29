@@ -7,4 +7,5 @@ public class ContentDto {
     private String qna;
     private String msg;
     private String img;
+    private String icstsmftayImg;
 }

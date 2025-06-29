@@ -19,4 +19,5 @@ public class ContentConstants {
     public static final String LOC2 = "G6oTp6ksta7UcyJzAyek8g==";
 
     public static final String IMG = "8hceP7zipLkLWx0O0osSE5NYwPXR+YEmuoMsytCAx7YzfZk4iLdx0xYhSxnXbIYDJvPQyLlJeQkq3eZQB1LVyLNFM4rZSsdCzj0N5AJKsSwlJ3u5kP+J0wkIye9d/K/y";
+    public static final String ICSTSMFTAY_IMG = "8hceP7zipLkLWx0O0osSE5NYwPXR+YEmuoMsytCAx7YzfZk4iLdx0xYhSxnXbIYDJvPQyLlJeQkq3eZQB1LVyLbaFepUdmFzTIhHgCpLNz8=";
 }
